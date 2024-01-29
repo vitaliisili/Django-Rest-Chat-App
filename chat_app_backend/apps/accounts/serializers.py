@@ -4,14 +4,14 @@ from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-
-    def create(self, validated_data):
-        user = get_user_model().objects.create_user(**validated_data)
-        return user
+    image = serializers.ImageField(required=False)
+    # def create(self, validated_data):
+    #     user = get_user_model().objects.create_user(**validated_data)
+    #     return user
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'password', 'first_name', 'last_name')
+        fields = ('email', 'password', 'first_name', 'last_name', 'image')
         extra_kwargs = {'password': {'write_only': True}}
 
 

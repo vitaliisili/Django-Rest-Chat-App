@@ -68,7 +68,6 @@ AUTHENTICATION_BACKENDS = (
 )
 
 MIDDLEWARE = [
-    # 'apps.chat.middleware.OAuth2Middleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # noqa
@@ -146,31 +145,23 @@ USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+MEDIA_ROOT = Path(BASE_DIR, 'media')
+MEDIA_URL = 'media/'
+
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console_handler': {
+            'class': 'logging.StreamHandler',
+            # 'formatter': "verbose"
         },
-        # "file": {
-        #     "class": "logging.FileHandler",
-        #     "filename": "logs/general.log",
-        #     "formatter": "verbose",
-        # },
     },
-    "loggers": {
-        "": {
-            # "handlers": ["console", "file"],
-            "handlers": ["console"],
-            "level": os.environ.get("DJANGO_LOG_LEVEL", "INFO"),
-        }
-    },
-    "formatters": {
-        "verbose": {
-            "format": "{levelname}: {asctime} - {name}- {message}",
-            "style": "{",
-        }
+    'loggers': {
+        '': {
+            'level': 'INFO',
+            'handlers': ['console_handler'],
+        },
     },
 }

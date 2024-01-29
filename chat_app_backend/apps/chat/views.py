@@ -1,12 +1,14 @@
 import logging
+import uuid
 
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apps.chat.models import ChatRequest, ChatRoom
-from apps.chat.serializers import ChatRequestSerializer, ChatRoomSerializer
+from apps.chat.serializers import ChatRequestSerializer, ChatRoomSerializer, ContactChatRoomSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -50,20 +52,52 @@ class ChatRequestViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def partial_update(self, request, *args, **kwargs):
-        logger.info(f"::: Partial update data: {request.data}")
-        data = request.data
+    @action(methods=['PATCH'], detail=True, url_path='accept-invitation')
+    def accept_invitation(self, request, pk=None):
+
         instance = self.get_object()
-        serializer = self.get_serializer(
-            instance, data=data, partial=True
-        )
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        chat_room = ChatRoom(name=uuid.uuid4())
+        chat_room.save()
+
+        chat_room.members.set([instance.sender, instance.receiver])
+        chat_room.save()
+
+        return Response({"message": "Invite accepted"}, status=status.HTTP_200_OK)
 
 
 class ChatRoomViewSet(viewsets.ModelViewSet):
     queryset = ChatRoom.objects.all()  # noqa
     serializer_class = ChatRoomSerializer
     permission_classes = [IsAuthenticated]
+
+    @action(methods=['GET'], detail=False, url_path='contacts')
+    def get_contacts(self, request):
+        try:
+            queryset = ChatRoom.objects.filter(members__id=request.user.id)  # noqa
+            data = [
+                {
+                    "contact_name":
+                        chat.members.all()[1].get_full_name() if
+                        chat.members.all()[0].id == request.user.id else
+                        chat.members.all()[0].get_full_name(),
+                    "image":
+                        chat.members.all()[1].image if
+                        chat.members.all()[0].id == request.user.id else
+                        chat.members.all()[0].image,
+                    "chat_name": chat.name,
+                } for chat in queryset
+            ]  # TODO: Simplify this code because WTF :)
+
+            serializer = ContactChatRoomSerializer(data=data, many=True)
+            serializer.is_valid(raise_exception=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+

@@ -18,7 +18,15 @@ class ChatRequestSerializer(serializers.ModelSerializer):
 
 
 class ChatRoomSerializer(serializers.ModelSerializer):
+    members = UserSerializer(many=True)
+
     class Meta:
         model = ChatRoom
         fields = ('id', 'name', 'members', 'created_at')
         read_only_fields = ('id', 'created_at')
+
+
+class ContactChatRoomSerializer(serializers.Serializer):
+    chat_name = serializers.CharField(max_length=255, required=True)
+    contact_name = serializers.CharField(max_length=255, required=True)
+    image = serializers.ImageField(required=False)
