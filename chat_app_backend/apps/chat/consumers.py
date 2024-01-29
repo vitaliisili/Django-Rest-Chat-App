@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         logger.info('::: Connected')
-        self.room_name = self.scope["url_route"]["kwargs"]['id']
+        self.room_name = self.scope["url_route"]["kwargs"]['name']
         self.room_group_name = f"chat_{self.room_name}"
         self.user = self.scope['user']
 
@@ -33,16 +33,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
         message = data['message']
+        author = data['author']
+        logger.info(f'::: Author: {author}')
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 "type": "chat_message",
                 "message": message,
+                'author': author
             })
 
     async def chat_message(self, event):
         message = event['message']
+        author = event['author']
         await self.send(text_data=json.dumps({
             'type': 'message',
             'message': message,
+            'author': author,
         }))
