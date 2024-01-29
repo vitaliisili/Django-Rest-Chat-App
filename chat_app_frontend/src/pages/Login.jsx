@@ -10,19 +10,20 @@ import axios from "../api/axios";
 import useAuthService from "../hooks/useAuthService";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
+
 const LOGIN_URL = '/auth/token/'
 const CURRENT_USER_URL = '/api/accounts/users/me'
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
 const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET
+
 const Login = () => {
     const authService = useAuthService()
     const navigate = useNavigate()
     const privateAxios = useAxiosPrivate()
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [password, setPassword] = useState('password')
     const [errMsg, setErrMsg] = useState('');
 
-    console.log(CLIENT_ID, CLIENT_SECRET)
     const loginHandler = async  () => {
         try {
             const response = await axios.post(LOGIN_URL, {
@@ -55,7 +56,6 @@ const Login = () => {
 
             console.log('Login success')
         } catch (error) {
-            console.log(error)
             console.error('Login failed:', error?.response?.data);
         }
     }

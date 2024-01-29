@@ -10,6 +10,7 @@ import useAuthService from "../hooks/useAuthService";
 import {TfiFaceSad} from "react-icons/tfi";
 
 const CHAT_REQUEST_URL = '/api/chat/chat-requests/'
+// const CHAT_ACCEPT_INVITATION_URL = '/api/chat/chat-requests/accept_invitation/'
 
 const NotificationTab = ({tab}) => {
     const authService = useAuthService()
@@ -22,11 +23,11 @@ const NotificationTab = ({tab}) => {
             const sendInvitation = []
             const receiveInvitation = []
             response?.data.forEach((item) => {
-                if (item.receiver.email === authService.getUser().email && item.status === 'waiting') {
+                if (item.receiver.email === authService.getUser().email && item.status === 'pending') {
                     sendInvitation.push(item)
                 }
 
-                if (item.sender.email === authService.getUser().email) {
+                if (item.sender.email === authService.getUser().email && item.status === 'pending') {
                     receiveInvitation.push(item)
                 }
             })
@@ -45,9 +46,10 @@ const NotificationTab = ({tab}) => {
 
     const updateInvitationHandler = async (notification, type) => {
         try {
-            const response = await axios.patch(`${CHAT_REQUEST_URL}${notification.id}/`, {
-                status: type === 'accept' ? 2 : 3
+            const response = await axios.patch(`${CHAT_REQUEST_URL}${notification.id}/accept-invitation/`, {
+                status: 2
             })
+            console.log(response?.data)
             notificationHandler()
         }catch (error) {
             console.log('Contact accept failed: ', error?.response?.data)
@@ -84,10 +86,10 @@ const NotificationTab = ({tab}) => {
 
                                     <div className='flex space-x-8'>
                                         <Tooltip title='Accept'>
-                                            <div onClick={() => updateInvitationHandler(invitation, 'accept')}><LiaUserCheckSolid className='cursor-pointer text-2xl text-green-900'/></div>
+                                            <div onClick={() => updateInvitationHandler(invitation)}><LiaUserCheckSolid className='cursor-pointer text-2xl text-green-900'/></div>
                                         </Tooltip>
                                         <Tooltip title='Decline'>
-                                            <div onClick={() => updateInvitationHandler(invitation, 'decline')}><LiaUserTimesSolid className='cursor-pointer text-2xl text-rose-900'/></div>
+                                            <div onClick={() => removeInvitationHandler(invitation)}><LiaUserTimesSolid className='cursor-pointer text-2xl text-rose-900'/></div>
                                         </Tooltip>
                                     </div>
                                 </div>
@@ -109,7 +111,7 @@ const NotificationTab = ({tab}) => {
                                     </div>
 
                                     <div className='flex space-x-8'>
-                                        {invitation.status === 'waiting' ? <div className='flex space-x-2'>
+                                        {invitation.status === 'pending' ? <div className='flex space-x-2'>
                                             <Tooltip title='Pending'>
                                                 <div><CiTimer className='text-2xl'/></div>
                                             </Tooltip>
@@ -119,29 +121,6 @@ const NotificationTab = ({tab}) => {
                                             </Tooltip>
 
                                         </div> : <></>}
-
-                                        {invitation.status === 'declined' ? <div className='flex space-x-2'>
-                                            <Tooltip title='Declined'>
-                                                <div><TfiFaceSad className='text-2xl text-amber-700'/></div>
-                                            </Tooltip>
-
-                                            <Tooltip title='Remove notification'>
-                                                <div><IoCloseOutline onClick={() => removeInvitationHandler(invitation)} className='cursor-pointer text-rose-900 text-2xl'/></div>
-                                            </Tooltip>
-
-                                        </div> : <></>}
-
-                                        {invitation.status === 'accepted' ? <div className='flex space-x-2'>
-                                            <Tooltip title='Accepted'>
-                                                <div><IoCheckmarkDone className='text-2xl text-green-900'/></div>
-                                            </Tooltip>
-
-                                            <Tooltip title='Remove notification'>
-                                                <div><IoCloseOutline onClick={() => removeInvitationHandler(invitation)} className='cursor-pointer text-rose-900 text-2xl'/></div>
-                                            </Tooltip>
-
-                                        </div> : <></>}
-
                                     </div>
                                 </div>
                             </div>
