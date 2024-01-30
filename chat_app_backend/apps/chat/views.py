@@ -7,8 +7,9 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from apps.chat.models import ChatRequest, ChatRoom
-from apps.chat.serializers import ChatRequestSerializer, ChatRoomSerializer, ContactChatRoomSerializer
+from apps.chat.models import ChatRequest, ChatRoom, Message
+from apps.chat.serializers import ChatRequestSerializer, ChatRoomSerializer, ContactChatRoomSerializer, \
+    MessageSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -99,3 +100,16 @@ class ChatRoomViewSet(viewsets.ModelViewSet):
         except Exception as e:
             print(e)
             return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MessagesViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.all()  # noqa
+    serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
+
+    @action(methods=['get'], detail=False, url_path='get-room-messages')
+    def get_room_messages(self, request):
+        room_name = request.query_params.get('room-name')
+        query_set = Message.objects.filter(chat_room__name=room_name)  # noqa
+        serializer = self.get_serializer(query_set, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

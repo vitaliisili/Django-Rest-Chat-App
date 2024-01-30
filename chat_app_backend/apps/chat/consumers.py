@@ -1,8 +1,15 @@
 import json
 import logging
+from datetime import datetime, timezone
 
+from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.http import JsonResponse
+from django.utils.dateparse import parse_datetime
+
+from apps.chat.models import ChatRoom, Message
+from apps.chat.serializers import MessageSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -34,20 +41,33 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         message = data['message']
         author = data['author']
-        logger.info(f'::: Author: {author}')
+        timestamp = data['timestamp']
+
+        chat_room = await database_sync_to_async(ChatRoom.objects.get)(name=self.room_name)  # noqa
+        chat_message = Message(content=message,
+                               author=self.scope['user'],
+                               chat_room=chat_room,
+                               created_at=timestamp)
+
+        await database_sync_to_async(chat_message.save)()
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 "type": "chat_message",
                 "message": message,
-                'author': author
+                'author': author,
+                'timestamp': timestamp,
             })
 
     async def chat_message(self, event):
         message = event['message']
         author = event['author']
+        timestamp = event['timestamp']
+
         await self.send(text_data=json.dumps({
             'type': 'message',
-            'message': message,
+            'content': message,
             'author': author,
+            'timestamp': timestamp,
         }))

@@ -23,6 +23,7 @@ CSRF_TRUSTED_ORIGINS = env.str('CSRF_TRUSTED_ORIGINS').split(',')
 CUSTOM_APPS = [
     'apps.accounts',
     'apps.chat',
+    'apps.core',
 ]
 
 THIRD_PARTY_APPS = [
@@ -31,6 +32,7 @@ THIRD_PARTY_APPS = [
     'oauth2_provider',
     'social_django',
     'drf_social_oauth2',
+    'django_filters',
 ]
 
 INSTALLED_APPS = [
@@ -50,6 +52,12 @@ REST_FRAMEWORK = {
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'drf_social_oauth2.authentication.SocialAuthentication',
     ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.ResultSetPagination',
 }
 
 # Facebook configuration
@@ -144,7 +152,6 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 MEDIA_ROOT = Path(BASE_DIR, 'media')
 MEDIA_URL = 'media/'

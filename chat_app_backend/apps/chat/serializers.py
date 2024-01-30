@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from rest_framework import serializers
 from apps.accounts.serializers import UserSerializer
-from apps.chat.models import ChatRequest, ChatRoom
+from apps.chat.models import ChatRequest, ChatRoom, Message
 
 
 class ChatRequestSerializer(serializers.ModelSerializer):
@@ -30,3 +32,16 @@ class ContactChatRoomSerializer(serializers.Serializer):
     chat_name = serializers.CharField(max_length=255, required=True)
     contact_name = serializers.CharField(max_length=255, required=True)
     image = serializers.ImageField(required=False)
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ('id', 'author', 'content', 'chat_room', 'created_at')
+        read_only_fields = ('id',)
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['chat_room'] = ChatRoomSerializer(instance.chat_room).data
+        representation['author'] = UserSerializer(instance.author).data
+        return representation

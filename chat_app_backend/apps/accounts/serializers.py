@@ -5,9 +5,10 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     image = serializers.ImageField(required=False)
-    # def create(self, validated_data):
-    #     user = get_user_model().objects.create_user(**validated_data)
-    #     return user
+
+    def create(self, validated_data):
+        user = get_user_model().objects.create_user(**validated_data)
+        return user
 
     class Meta:
         model = get_user_model()
