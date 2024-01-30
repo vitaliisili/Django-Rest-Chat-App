@@ -99,5 +99,3 @@ class ChatRoomViewSet(viewsets.ModelViewSet):
         except Exception as e:
             print(e)
             return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
