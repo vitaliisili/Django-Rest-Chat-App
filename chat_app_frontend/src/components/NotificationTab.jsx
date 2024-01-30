@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import testProfile from "../static/images/test-profile.jpg";
 import {Tooltip} from "@mui/material";
 import {LiaUserCheckSolid, LiaUserTimesSolid} from "react-icons/lia";
 import {CiTimer} from "react-icons/ci";
-import {IoCheckmarkDone, IoCloseOutline} from "react-icons/io5";
-import {FaUserXmark} from "react-icons/fa6";
+import {IoCloseOutline} from "react-icons/io5";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useAuthService from "../hooks/useAuthService";
-import {TfiFaceSad} from "react-icons/tfi";
+
 
 const CHAT_REQUEST_URL = '/api/chat/chat-requests/'
-// const CHAT_ACCEPT_INVITATION_URL = '/api/chat/chat-requests/accept_invitation/'
+const API_URL = process.env.REACT_APP_API_BASE_URL;
 
 const NotificationTab = ({tab}) => {
     const authService = useAuthService()
@@ -22,6 +20,7 @@ const NotificationTab = ({tab}) => {
             const response = await axios(CHAT_REQUEST_URL)
             const sendInvitation = []
             const receiveInvitation = []
+            // console.log(response.data[0].sender.image)
             response?.data.forEach((item) => {
                 if (item.receiver.email === authService.getUser().email && item.status === 'pending') {
                     sendInvitation.push(item)
@@ -75,7 +74,7 @@ const NotificationTab = ({tab}) => {
                             <div
                                 className={`friends-container flex items-center text-gallery font-poppins`}>
                                 <div className='image-wrapper items-center w[50px] h-[50px] text-center'>
-                                    <div className='image bg-no-repeat bg-cover bg-center w-[50px] h-[50px] rounded-full' style={{backgroundImage: `url(${testProfile})`}}></div>
+                                    <div className='image bg-no-repeat bg-cover bg-center w-[50px] h-[50px] rounded-full' style={{backgroundImage: `url(${API_URL}${invitation.sender.image})`}}></div>
                                 </div>
 
                                 <div
@@ -99,10 +98,11 @@ const NotificationTab = ({tab}) => {
 
                     <div className='text-2xl text-nobel'>Out coming requests</div>
                     {chatRequests.receiveInvitation.map((invitation, index) => (
+
                         <div key={index} className='text-gallery'>
                             <div className={`friends-container flex items-center text-gallery font-poppins`}>
                                 <div className='image-wrapper items-center w[50px] h-[50px] text-center'>
-                                    <div className='image bg-no-repeat bg-cover bg-center w-[50px] h-[50px] rounded-full' style={{backgroundImage: `url(${testProfile})`}}></div>
+                                    <div className='image bg-no-repeat bg-cover bg-center w-[50px] h-[50px] rounded-full' style={{backgroundImage: `url(${API_URL}${invitation.receiver.image})`}}></div>
                                 </div>
 
                                 <div className='ml-4 flex justify-between w-full border-b border-shark py-4'>

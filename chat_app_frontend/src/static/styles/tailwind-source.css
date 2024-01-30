@@ -14,12 +14,12 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #374045;
+    background: rgba(55, 64, 69, 0.8);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: rgba(55, 64, 69);
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {

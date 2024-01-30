@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Tooltip} from "@mui/material";
 import {IoMdCloseCircle} from "react-icons/io";
 import {IoSearch} from "react-icons/io5";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import testProfile from "../static/images/test-profile.jpg";
+// import testProfile from "../static/images/test-profile.jpg";
 
 const URL_REQUEST_INVITE = '/api/chat/chat-requests/'
 const URL_CONTACT = '/api/accounts/users/contact/'
@@ -38,7 +38,7 @@ const AddContactsModal = ({callbackCloseModal}) => {
     }
 
     return (
-        <div className='bg-space/30 backdrop-blur-sm flex w-full h-full justify-center absolute'>
+        <div className='bg-space/30 backdrop-blur-sm flex w-full h-full justify-center absolute z-50'>
             <div className='relative flex flex-col h-fit mt-20 bg-bunker-light/80 p-16 px-24'>
                 <div className='flex'>
                     <Tooltip title='Close'>
@@ -66,7 +66,7 @@ const AddContactsModal = ({callbackCloseModal}) => {
                         {contact ?
                             <div className={`friends-container flex items-center text-gallery font-poppins`}>
                                 <div className='image-wrapper items-center w[50px] h-[50px] text-center'>
-                                    <div className='image bg-no-repeat bg-cover bg-center w-[50px] h-[50px] rounded-full' style={{backgroundImage: `url(${testProfile})`}}></div>
+                                    <div className='image bg-no-repeat bg-cover bg-center w-[50px] h-[50px] rounded-full' style={{backgroundImage: `url(${contact?.image})`}}></div>
                                 </div>
 
                                 <div className='ml-4 flex justify-between w-full border-b border-shark py-4'>

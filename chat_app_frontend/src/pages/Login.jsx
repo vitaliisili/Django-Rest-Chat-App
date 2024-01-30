@@ -21,7 +21,7 @@ const Login = () => {
     const navigate = useNavigate()
     const privateAxios = useAxiosPrivate()
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('password')
+    const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('');
 
     const loginHandler = async  () => {
@@ -47,7 +47,8 @@ const Login = () => {
 
             authService.setUser({
                 name: `${data?.first_name} ${data?.last_name}`,
-                email: data?.email
+                email: data?.email,
+                image: data?.image
             })
 
             setEmail('')
