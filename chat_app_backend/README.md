@@ -2,7 +2,7 @@
 This is a simple Django REST Chat App example demonstrating how to build a basic chat application using 
 Django and Django REST Framework.
 
-![cover.png](docs%2Fimages%2Fcover.png)
+![cover.png](docs/images/cover.png)
 
 ## Features
 - User Authentication: Users can register, login, and logout.
@@ -62,11 +62,11 @@ python -m manage runserver
 - Open [http://localhost:8000/admin](http://localhost:8000/admin) and login as superuser that you created earlier
 
 - Create a new application for Oauth2 authentication click `Add` button
-![application_step_1.png](docs%2Fimages%2Fapplication_step_1.png)
+![application_step_1.png](docs/images/application_step_1.png)
 - `Client id` will be generated automatically
 - `Client type` should be Confidential
 - `Authorization grant type:` should be Resource owner password-based
-![application_step_2.png](docs%2Fimages%2Fapplication_step_2.png)
+![application_step_2.png](docs/images/application_step_2.png)
 
 > IMPORTANT: Copy and save `Client secret` before saving application because it will hashed on save.
 
