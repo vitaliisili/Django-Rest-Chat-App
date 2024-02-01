@@ -60,17 +60,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.ResultSetPagination',
 }
 
-# Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = env.str('FACEBOOK_KEY')
-SOCIAL_AUTH_FACEBOOK_SECRET = env.str('FACEBOOK_SECRET')
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
-
 oauth2_settings.DEFAULTS['ACCESS_TOKEN_EXPIRE_SECONDS'] = env.int('OAUTH2_ACCESS_TOKEN_EXPIRE_SECONDS')
 ACTIVATE_JWT = True
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.facebook.FacebookAppOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
     'drf_social_oauth2.backends.DjangoOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
