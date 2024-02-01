@@ -90,12 +90,12 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
                         <div key={index} className='grid mb-1'>
                             {msg?.author?.email === authService.getUser().email ?
                                 <div
-                                    className='px-3 py-2 rounded-lg bg-eden flex justify-end justify-self-end mr-4 ml-32 break-all'>
+                                    className='px-3 py-2 rounded-lg bg-eden flex justify-end justify-self-end mr-10 ml-32 break-all'>
                                     <div className='text-[14px]'>{msg.content}</div>
                                     <div className='flex min-w-8 text-[10px] text-nobel-light items-end justify-end -mb-0.5'>{convertTime(msg.timestamp)}</div>
                                 </div> :
                                 <div
-                                    className='px-3 py-2 rounded-lg bg-shark flex justify-self-start ml-4 mr-32 break-all'>
+                                    className='px-3 py-2 rounded-lg bg-shark flex justify-self-start ml-10 mr-32 break-all'>
                                     <div className='text-[14px]'>{msg.content}</div>
                                     <div className='flex min-w-8 text-[10px] text-nobel-light items-end justify-end -mb-0.5'>{convertTime(msg.timestamp)}</div>
                                 </div>

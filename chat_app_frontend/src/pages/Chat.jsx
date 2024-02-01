@@ -134,7 +134,7 @@ const Chat = () => {
 
                 </div>
                 {/*Right Window*/}
-                <div className='flex flex-col w-full relative'>
+                <div className='flex flex-col border-r-[1px] border-b-[1px] border-cape w-full relative'>
 
                     {
                         addContactsModal &&

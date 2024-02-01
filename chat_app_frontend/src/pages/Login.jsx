@@ -61,6 +61,12 @@ const Login = () => {
         }
     }
 
+    const keyPressedHandler = (e) => {
+        if (e.code === 'Enter') {
+            loginHandler()
+        }
+    }
+
     return (
         <div className="flex h-screen justify-center items-center bg-no-repeat bg-cover" style={{backgroundImage: `url(${login_bg})`}}>
 
@@ -71,20 +77,20 @@ const Login = () => {
                     <input onChange={(e) => setEmail(e.target.value)} value={email} type="text" className='bg-transparent py-3 text-gray-700 border-none focus:ring-0 focus:outline-none' placeholder='Email address'/>
                 </div>
 
-                <div className='flex justify-center items-center bg-white/30 backdrop-blur-sm mt-4 rounded-3xl backdrop-opacity-85'>
+                <div onKeyDown={keyPressedHandler} className='flex justify-center items-center bg-white/30 backdrop-blur-sm mt-4 rounded-3xl backdrop-opacity-85'>
                     <FaLock className='text-white pl-3 pr-2 text-4xl'/>
                     <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className='bg-transparent py-3 text-gray-700 border-none focus:ring-0 focus:outline-none' placeholder='Password'/>
                 </div>
 
                 <button onClick={loginHandler} className='text-white bg-[#fc636b] font-bold rounded-3xl w-full py-2 mt-4'>Login</button>
 
-                <div className='text-white mt-4 w-full text-center'>Or login using social media</div>
-                <div className='flex mt-3 w-full justify-around'>
-                    <img className='cursor-pointer' src={google} alt="google" width='50' height='50'/>
-                    <img className='cursor-pointer' src={facebook} alt="facebook" width='50' height='50'/>
-                    <img className='cursor-pointer' src={linkedin} alt="linkedin" width='50' height='50'/>
-                    <img className='cursor-pointer' src={github} alt="github" width='50' height='50'/>
-                </div>
+                <div className='text-nobel-light mt-4 w-full text-center'>Not registered yet</div>
+                {/*<div className='flex mt-3 w-full justify-around'>*/}
+                {/*    <img className='cursor-pointer' src={google} alt="google" width='50' height='50'/>*/}
+                {/*    <img className='cursor-pointer' src={facebook} alt="facebook" width='50' height='50'/>*/}
+                {/*    <img className='cursor-pointer' src={linkedin} alt="linkedin" width='50' height='50'/>*/}
+                {/*    <img className='cursor-pointer' src={github} alt="github" width='50' height='50'/>*/}
+                {/*</div>*/}
 
                 <div className='text-white mt-4 font-bold uppercase'>
                     <Link to='/registration'>Create Account</Link>
