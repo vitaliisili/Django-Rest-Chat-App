@@ -1,0 +1,1 @@
+![cover](chat_app_frontend/docs/images/cover.png)
