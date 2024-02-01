@@ -1,5 +1,5 @@
 # Chat App
-![typing.gif](docs%2Fimages%2Ftyping.gif)
+![typing.gif](docs/images/typing.gif)
 
 This project is a simple chat application built using React for the 
 frontend and Django with WebSocket for the backend, allowing users 
@@ -33,17 +33,17 @@ npm start
 - Access the Application: </br>
 Once the application is running, open your web browser and navigate to [http://localhost:3000/](http://localhost:3000/).
 
-![login_page.png](docs%2Fimages%2Flogin_page.png)
+![login_page.png](docs/images/login_page.png)
 
 - Register new account then login
 
 > To add user for chat search by email
 
-![add_user.png](docs%2Fimages%2Fadd_user.png)
+![add_user.png](docs/images/add_user.png)
 
 > User that was invited will see invitation in notification
 
-![accept_invitation.png](..%2F..%2F..%2F..%2FDesktop%2Faccept_invitation.png)
+![accept_invitation.png](docs/images/accept_invitation.png)
 
 ## Features
 - Real-time Chat: Users can send and receive messages in real-time using WebSockets.
