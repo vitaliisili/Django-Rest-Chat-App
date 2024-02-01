@@ -146,4 +146,4 @@ pgadmin_data
 # Test database
 */test.db
 
-*.png
+media/**/*.png
