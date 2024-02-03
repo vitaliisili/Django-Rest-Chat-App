@@ -28,7 +28,6 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
         lastJsonMessage,
         readyState,
         getWebSocket,
-    // } = useWebSocket(`${protocol === 'https' ? 'wss':'ws'}://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
     } = useWebSocket(`${protocol === 'https' ? 'wss':'ws'}://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
         onOpen: () => {
 
