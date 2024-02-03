@@ -152,6 +152,9 @@ STATIC_URL = 'static/'
 STATIC_ROOT = Path(BASE_DIR, 'static/')
 STORAGE = ["whitenoise.storage.CompressedManifestStaticFilesStorage"]
 
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
