@@ -36,8 +36,6 @@ services:
       - "9045:8000"
     volumes:
       - /var/www/chat-app-data/media:/api/media
-#      - /etc/letsencrypt/live/chatapi.vitaliisili.com/privkey.pem:/api/certs/privkey.pem
-#      - /etc/letsencrypt/live/chatapi.vitaliisili.com/fullchain.pem:/api/certs/fullchain.pem
 
 volumes:
   chat_app_database:
