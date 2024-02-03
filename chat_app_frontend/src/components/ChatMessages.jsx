@@ -27,7 +27,7 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
         lastJsonMessage,
         readyState,
         getWebSocket,
-    } = useWebSocket(`ws://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
+    } = useWebSocket(`wss://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
         onOpen: () => {
 
             const getHistory = async () => {
