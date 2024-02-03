@@ -25,8 +25,12 @@ services:
       context: .
       dockerfile: Dockerfile
     command: >
-      sh -c "python -m manage migrate && python -m manage collectstatic --noinput && 
-                    daphne -e ssl:8000:privateKey=certs/privkey.pem:certKey=certs/fullchain.pem config.asgi:application"
+      sh -c "python -m manage migrate && 
+      python -m manage collectstatic --noinput && 
+      mkdir -p /certs &&
+      touch certs/privkey.pem && 
+      touch certs/fullchain.pem && 
+      daphne -e ssl:8000:privateKey=certs/privkey.pem:certKey=certs/fullchain.pem config.asgi:application"
     image: chatapp:latest
     depends_on:
       - chatapp_db
@@ -36,8 +40,8 @@ services:
       - "9045:8000"
     volumes:
       - /var/www/chat-app-data/media:/api/media
-      - /etc/letsencrypt/live/chatapi.vitaliisili.com/privkey.pem:certs/privkey.pem
-      - /etc/letsencrypt/live/chatapi.vitaliisili.com/fullchain.pem:certs/fullchain.pem
+      - /etc/letsencrypt/live/chatapi.vitaliisili.com/privkey.pem:api/certs/privkey.pem
+      - /etc/letsencrypt/live/chatapi.vitaliisili.com/fullchain.pem:api/certs/fullchain.pem
 
 volumes:
   chat_app_database:
