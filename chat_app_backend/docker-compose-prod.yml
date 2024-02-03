@@ -6,8 +6,6 @@ services:
     volumes:
       - ./redis/data:/var/lib/redis
       - ./redis/data-config/:/usr/local/etc/redis/redis.conf
-    ports:
-      - '6380:6379'
 
   chatapp_db:
     image: postgres:latest
