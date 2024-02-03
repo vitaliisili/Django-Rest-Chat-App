@@ -1,15 +1,9 @@
 import json
 import logging
-from datetime import datetime, timezone
-
-from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.http import JsonResponse
-from django.utils.dateparse import parse_datetime
-
 from apps.chat.models import ChatRoom, Message
-from apps.chat.serializers import MessageSerializer
+
 
 logger = logging.getLogger(__name__)
 

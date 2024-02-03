@@ -9,7 +9,6 @@ from urllib.parse import parse_qs
 @database_sync_to_async
 def get_user(scope):
     user = None
-
     query_string = scope.get('query_string').decode()
     params = parse_qs(query_string)
     token_key = params.get('token')[0]

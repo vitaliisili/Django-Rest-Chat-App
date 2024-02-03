@@ -18,8 +18,6 @@ from channels.security.websocket import AllowedHostsOriginValidator
 from apps.chat import route
 from apps.chat.middleware import TokenAuthMiddlewareStack
 
-
-
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
     "websocket": AllowedHostsOriginValidator(
