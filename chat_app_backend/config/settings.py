@@ -69,6 +69,7 @@ AUTHENTICATION_BACKENDS = (
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # noqa
     'django.middleware.common.CommonMiddleware',
@@ -105,7 +106,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("localhost", 6379)],
+            "hosts": [(env.str('REDIS_HOST'), env('REDIS_PORT'))],
         },
     },
 }
@@ -142,11 +143,14 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = Path(BASE_DIR, 'media')
 MEDIA_URL = 'media/'
+
+STATIC_URL = 'static/'
+STATIC_ROOT = Path(BASE_DIR, 'static/')
+STORAGE = ["whitenoise.storage.CompressedManifestStaticFilesStorage"]
 
 LOGGING = {
     'version': 1,
