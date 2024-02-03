@@ -41,5 +41,4 @@ services:
 
 volumes:
   chat_app_database:
-  redis/data:
-  redis/data-config:
+  redis:
