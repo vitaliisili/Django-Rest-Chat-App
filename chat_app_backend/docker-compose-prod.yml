@@ -26,8 +26,7 @@ services:
       dockerfile: Dockerfile
     command: >
       sh -c "python -m manage migrate && 
-      python -m manage collectstatic --noinput && 
-      daphne -p 8000 config.asgi:application"
+      python -m manage collectstatic --noinput && daphne -b 0.0.0.0 -p 8000 config.asgi:application"
     image: chatapp:latest
     depends_on:
       - chatapp_db
