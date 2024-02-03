@@ -29,12 +29,12 @@ pipeline {
             }
         }
 
-        stage('Copy ssl certificates') {
-            steps {
-                sh 'cp /etc/letsencrypt/live/chatapi.vitaliisili.com/privkey.pem privkey.pem'
-                sh 'cp /etc/letsencrypt/live/chatapi.vitaliisili.com/fullchain.pem fullchain.pem'
-            }
-        }
+        // stage('Copy ssl certificates') {
+        //     steps {
+        //         sh 'cp /etc/letsencrypt/live/chatapi.vitaliisili.com/privkey.pem privkey.pem'
+        //         sh 'cp /etc/letsencrypt/live/chatapi.vitaliisili.com/fullchain.pem fullchain.pem'
+        //     }
+        // }
 
         stage('Deploy Back End Application') {
             steps {
