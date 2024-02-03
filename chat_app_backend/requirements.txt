@@ -64,3 +64,4 @@ urllib3==2.1.0
 wrapt==1.16.0
 zope.interface==6.1
 whitenoise==6.6.0
+gunicorn==21.2.0
