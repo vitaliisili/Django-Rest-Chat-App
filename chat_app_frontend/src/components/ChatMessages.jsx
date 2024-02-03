@@ -12,7 +12,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import moment from "moment";
 
 const MESSAGE_HISTORY_URL = '/api/chat/messages'
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = process.env.REACT_APP_API_BASE_URL.replace(/(^\w+:|^)\/\//, '');
 
 const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
     // console.log(activeChat)
@@ -20,6 +20,7 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
     const axios = useAxiosPrivate()
     const [message, setMessage] = useState('')
     const [messageHistory, setMessageHistory] = useState([])
+    const protocol = window.location.protocol
     const {
         sendMessage,
         sendJsonMessage,
@@ -27,7 +28,8 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
         lastJsonMessage,
         readyState,
         getWebSocket,
-    } = useWebSocket(`wss://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
+    // } = useWebSocket(`${protocol === 'https' ? 'wss':'ws'}://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
+    } = useWebSocket(`${protocol === 'https' ? 'wss':'ws'}://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
         onOpen: () => {
 
             const getHistory = async () => {
