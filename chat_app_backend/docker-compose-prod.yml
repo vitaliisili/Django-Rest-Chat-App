@@ -27,10 +27,7 @@ services:
     command: >
       sh -c "python -m manage migrate && 
       python -m manage collectstatic --noinput && 
-      mkdir -p /certs &&
-      touch certs/privkey.pem && 
-      touch certs/fullchain.pem && 
-      daphne -e ssl:8000:privateKey=certs/privkey.pem:certKey=certs/fullchain.pem config.asgi:application"
+      daphne -p 8000 config.asgi:application"
     image: chatapp:latest
     depends_on:
       - chatapp_db
