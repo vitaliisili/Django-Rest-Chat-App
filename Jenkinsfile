@@ -31,7 +31,7 @@ pipeline {
 
         stage('Deploy Back End Application') {
             steps {
-                sh 'sudo docker compose -f docker-compose-prod.yml --env-file=chat_app_backend/.env up -d --build'
+                sh 'sudo docker compose -f chat_app_backend/docker-compose-prod.yml --env-file=chat_app_backend/.env up -d --build'
 //                 sh 'sudo docker cp petoshield-api:/api/static /var/www/petoshield-data/static'
             }
         }
