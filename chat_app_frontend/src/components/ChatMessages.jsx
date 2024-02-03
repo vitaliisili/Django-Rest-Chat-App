@@ -12,6 +12,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import moment from "moment";
 
 const MESSAGE_HISTORY_URL = '/api/chat/messages'
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
     // console.log(activeChat)
@@ -26,7 +27,7 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
         lastJsonMessage,
         readyState,
         getWebSocket,
-    } = useWebSocket(`ws://localhost:8000/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
+    } = useWebSocket(`ws://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
         onOpen: () => {
 
             const getHistory = async () => {
