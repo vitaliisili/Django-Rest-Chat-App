@@ -14,8 +14,11 @@ from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
 from apps.chat import route
 from apps.chat.middleware import TokenAuthMiddlewareStack
+import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+django.setup()
+
 django_asgi_app = get_asgi_application()
 
 application = ProtocolTypeRouter({
