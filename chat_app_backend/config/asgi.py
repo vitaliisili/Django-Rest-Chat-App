@@ -12,17 +12,23 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
-from apps.chat import route
+from django.urls import path
+
+from apps.chat import route, consumers
 from apps.chat.middleware import TokenAuthMiddlewareStack
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-django.setup()
+# django.setup()
 
 django_asgi_app = get_asgi_application()
 
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
     "websocket": AllowedHostsOriginValidator(
-        TokenAuthMiddlewareStack(URLRouter(route.websocket_urlpatterns)))
+        TokenAuthMiddlewareStack(
+            # URLRouter(route.websocket_urlpatterns)))
+            URLRouter([
+                path('ws/chat/<uuid:name>', consumers.ChatConsumer.as_asgi())
+            ])))
 })
