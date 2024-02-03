@@ -13,15 +13,12 @@ def get_user(scope):
     query_string = scope.get('query_string').decode()
     params = parse_qs(query_string)
     token_key = params.get('token')[0]
-    print("TOKEN_KEY", token_key)
 
     if token_key is not None and token_key != "":
-        token = AccessToken.objects.get(token=token_key)
-        print('TOKEN_IS', token)
+        token = AccessToken.objects.get(token=token_key)  # noqa
         token_valid = token.is_valid()
-        print("TOKEN_VALID", token_valid)
+
         if token_valid:
-            print("TOKEN_VALID", token_valid)
             user = token.user
 
     return user or AnonymousUser()
