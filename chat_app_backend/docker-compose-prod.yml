@@ -4,8 +4,8 @@ services:
     image: redis:latest
     command: redis-server
     volumes:
-      - redis/data:/var/lib/redis
-      - redis/data-config/:/usr/local/etc/redis/redis.conf
+      - ./redis/data:/var/lib/redis
+      - ./redis/data-config/:/usr/local/etc/redis/redis.conf
     ports:
       - '6380:6379'
 
@@ -41,4 +41,3 @@ services:
 
 volumes:
   chat_app_database:
-  redis:
