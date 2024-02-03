@@ -29,6 +29,13 @@ pipeline {
             }
         }
 
+        stage('Copy ssl certificates') {
+            steps {
+                sh 'cp /etc/letsencrypt/live/chatapi.vitaliisili.com/privkey.pem privkey.pem'
+                sh 'cp /etc/letsencrypt/live/chatapi.vitaliisili.com/fullchain.pem fullchain.pem'
+            }
+        }
+
         stage('Deploy Back End Application') {
             steps {
                 sh 'sudo docker compose -f chat_app_backend/docker-compose-prod.yml --env-file=chat_app_backend/.env up -d --build'
