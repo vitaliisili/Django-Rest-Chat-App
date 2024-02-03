@@ -24,6 +24,7 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
     const host = window.location.host
     console.log(protocol)
     console.log(host)
+    console.log(BASE_URL)
     const {
         sendMessage,
         sendJsonMessage,
@@ -31,7 +32,7 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
         lastJsonMessage,
         readyState,
         getWebSocket,
-    } = useWebSocket(`${protocol === 'https:' ? 'wss':'ws'}://chatapi.vitaliisili.com/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
+    } = useWebSocket(`${protocol === 'https:' ? 'wss':'ws'}://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
         onOpen: () => {
 
             const getHistory = async () => {
