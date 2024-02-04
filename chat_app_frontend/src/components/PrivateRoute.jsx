@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Navigate, Outlet} from 'react-router-dom';
+import {Navigate, Outlet} from 'react-router-dom';
 import useAuthService from '../hooks/useAuthService';
 
 const PrivateRoute = ({children, redirectTo}) => {

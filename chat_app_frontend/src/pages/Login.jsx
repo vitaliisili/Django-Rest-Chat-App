@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
 import login_bg from '../static/images/login_bg.jpg'
 import {FaLock, FaUser} from "react-icons/fa";
-import google from '../static/images/google.svg'
-import facebook from '../static/images/facebook.svg'
-import linkedin from '../static/images/linkedin.svg'
-import github from '../static/images/github.svg'
 import {Link, useNavigate} from "react-router-dom";
 import axios from "../api/axios";
 import useAuthService from "../hooks/useAuthService";
@@ -22,7 +18,6 @@ const Login = () => {
     const privateAxios = useAxiosPrivate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [errMsg, setErrMsg] = useState('');
 
     const loginHandler = async  () => {
         try {
@@ -85,12 +80,6 @@ const Login = () => {
                 <button onClick={loginHandler} className='text-white bg-[#fc636b] font-bold rounded-3xl w-full py-2 mt-4'>Login</button>
 
                 <div className='text-nobel-light mt-4 w-full text-center'>Not registered yet</div>
-                {/*<div className='flex mt-3 w-full justify-around'>*/}
-                {/*    <img className='cursor-pointer' src={google} alt="google" width='50' height='50'/>*/}
-                {/*    <img className='cursor-pointer' src={facebook} alt="facebook" width='50' height='50'/>*/}
-                {/*    <img className='cursor-pointer' src={linkedin} alt="linkedin" width='50' height='50'/>*/}
-                {/*    <img className='cursor-pointer' src={github} alt="github" width='50' height='50'/>*/}
-                {/*</div>*/}
 
                 <div className='text-white mt-4 font-bold uppercase'>
                     <Link to='/registration'>Create Account</Link>

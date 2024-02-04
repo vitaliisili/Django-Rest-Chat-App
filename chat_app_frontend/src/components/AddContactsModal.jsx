@@ -4,7 +4,6 @@ import {IoMdCloseCircle} from "react-icons/io";
 import {IoSearch} from "react-icons/io5";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import SearchContactSkeleton from "./skeletons/SearchContactSkeleton";
-// import testProfile from "../static/images/test-profile.jpg";
 
 const URL_REQUEST_INVITE = '/api/chat/chat-requests/'
 const URL_CONTACT = '/api/accounts/users/contact/'
@@ -19,7 +18,7 @@ const AddContactsModal = ({callbackCloseModal}) => {
     const submitInviteHandler = async () => {
         setSubmitLoader(true)
         try {
-            const response = await axios.post(URL_REQUEST_INVITE, {
+            await axios.post(URL_REQUEST_INVITE, {
                 email: contact?.email
             })
             setContact(null)

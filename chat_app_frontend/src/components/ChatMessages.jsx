@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import chatBg from "../static/images/chat_bg.jpg";
-import AddContactsModal from "./AddContactsModal";
 import {Tooltip} from "@mui/material";
 import {FaRegSmileWink} from "react-icons/fa";
 import {ImAttachment} from "react-icons/im";
@@ -25,7 +24,6 @@ const ChatMessages = ({activeChat}) => {
     const {
         sendJsonMessage,
         lastJsonMessage,
-        readyState,
     } = useWebSocket(`${protocol === 'https:' ? 'wss':'ws'}://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
         onOpen: () => {},
         shouldReconnect: (closeEvent) => true,
@@ -52,7 +50,6 @@ const ChatMessages = ({activeChat}) => {
         if (lastJsonMessage !== null && lastJsonMessage?.type === 'message') {
             setMessageHistory((prev) => prev.concat(lastJsonMessage));
         }
-        // console.log(lastJsonMessage)
     }, [lastJsonMessage, setMessageHistory]);
 
     const messageHandler = () => {

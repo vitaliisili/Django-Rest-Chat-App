@@ -20,7 +20,7 @@ const NotificationTab = ({tab}) => {
             const response = await axios(CHAT_REQUEST_URL)
             const sendInvitation = []
             const receiveInvitation = []
-            // console.log(response.data[0].sender.image)
+
             response?.data.forEach((item) => {
                 if (item.receiver.email === authService.getUser().email && item.status === 'pending') {
                     sendInvitation.push(item)
@@ -43,7 +43,7 @@ const NotificationTab = ({tab}) => {
     }, []);
 
 
-    const updateInvitationHandler = async (notification, type) => {
+    const updateInvitationHandler = async (notification) => {
         try {
             const response = await axios.patch(`${CHAT_REQUEST_URL}${notification.id}/accept-invitation/`, {
                 status: 2
@@ -57,7 +57,7 @@ const NotificationTab = ({tab}) => {
 
     const removeInvitationHandler = async (notification) => {
         try {
-            const response = await axios.delete(`${CHAT_REQUEST_URL}${notification.id}/`)
+            await axios.delete(`${CHAT_REQUEST_URL}${notification.id}/`)
             notificationHandler()
         }catch (error) {
             console.log('Notification removal failed: ', error?.response?.data)
