@@ -5,6 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "../api/axios";
 import useAuthService from "../hooks/useAuthService";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import {toast} from "react-toastify";
 
 
 const LOGIN_URL = '/auth/token/'
@@ -20,6 +21,7 @@ const Login = () => {
     const [password, setPassword] = useState('')
 
     const loginHandler = async  () => {
+        const toast_id = toast.loading('Please wait...')
         try {
             const response = await axios.post(LOGIN_URL, {
                 grant_type: 'password',
@@ -48,10 +50,12 @@ const Login = () => {
 
             setEmail('')
             setPassword('')
+            toast.update(toast_id, {render: "Login success", type: 'success', isLoading: false, autoClose: 3000})
             navigate('/chat')
 
             console.log('Login success')
         } catch (error) {
+            toast.update(toast_id, {render:"Login failed", type: 'error', isLoading:false, autoClose: 3000})
             console.error('Login failed:', error?.response?.data);
         }
     }
@@ -69,12 +73,12 @@ const Login = () => {
                 <h1 className='text-4xl font-poppins text-white mb-4'>Login</h1>
                 <div className='flex justify-center items-center bg-white/30 backdrop-blur-sm rounded-3xl backdrop-opacity-85'>
                     <FaUser className='text-white pl-3 pr-2 text-4xl'/>
-                    <input onChange={(e) => setEmail(e.target.value)} value={email} type="text" className='bg-transparent py-3 text-gray-700 border-none focus:ring-0 focus:outline-none' placeholder='Email address'/>
+                    <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" className='bg-transparent w-64 py-3 text-gray-700 border-none focus:ring-0 focus:outline-none' placeholder='Email address'/>
                 </div>
 
                 <div onKeyDown={keyPressedHandler} className='flex justify-center items-center bg-white/30 backdrop-blur-sm mt-4 rounded-3xl backdrop-opacity-85'>
                     <FaLock className='text-white pl-3 pr-2 text-4xl'/>
-                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className='bg-transparent py-3 text-gray-700 border-none focus:ring-0 focus:outline-none' placeholder='Password'/>
+                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className='bg-transparent w-64 py-3 text-gray-700 border-none focus:ring-0 focus:outline-none' placeholder='Password'/>
                 </div>
 
                 <button onClick={loginHandler} className='text-white bg-[#fc636b] font-bold rounded-3xl w-full py-2 mt-4'>Login</button>

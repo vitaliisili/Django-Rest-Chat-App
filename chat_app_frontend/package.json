@@ -20,6 +20,7 @@
     "react-icons": "^4.9.0",
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
+    "react-toastify": "^10.0.4",
     "react-use-websocket": "^4.5.0",
     "universal-cookie": "^4.0.4"
   },
