@@ -6,7 +6,6 @@ import Registration from "./pages/Registration";
 import Unauthorized from "./components/Unauthorized";
 import PrivateRoute from "./components/PrivateRoute";
 import Chat from "./pages/Chat";
-import ChatTest from "./pages/ChatTest";
 
 const App = () => {
     return (
@@ -16,7 +15,6 @@ const App = () => {
                     <Route exact path='/' element={<Login/>}/>
                     <Route exact path='/registration' element={<Registration/>}/>
                     <Route exact path='/unauthorized' element={<Unauthorized/>}/>
-                    <Route exact path='/chat_test' element={<ChatTest/>}/>
                     <Route exact path='/chat' element={<PrivateRoute redirectTo='/'><Chat/></PrivateRoute>}/>
                 </Routes>
             </BrowserRouter>

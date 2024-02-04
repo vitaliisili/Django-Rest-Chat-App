@@ -10,43 +10,43 @@ import useAuthService from "../hooks/useAuthService";
 import useWebSocket from "react-use-websocket";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import moment from "moment";
+import MessageSkeleton from "./skeletons/MessageSkeleton";
 
 const MESSAGE_HISTORY_URL = '/api/chat/messages'
 const BASE_URL = process.env.REACT_APP_API_BASE_URL.replace(/(^\w+:|^)\/\//, '');
 
-const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
-    // console.log(activeChat)
+const ChatMessages = ({activeChat}) => {
     const authService = useAuthService()
     const axios = useAxiosPrivate()
     const [message, setMessage] = useState('')
     const [messageHistory, setMessageHistory] = useState([])
     const protocol = window.location.protocol
-    const host = window.location.host
-    console.log(protocol)
-    console.log(host)
-    console.log(BASE_URL)
+    const [messageLoader, setMessageLoader] = useState(true)
     const {
-        sendMessage,
         sendJsonMessage,
-        lastMessage,
         lastJsonMessage,
         readyState,
-        getWebSocket,
     } = useWebSocket(`${protocol === 'https:' ? 'wss':'ws'}://${BASE_URL}/ws/chat/${activeChat?.chat_name}?token=${authService.getAccessToken()}`, {
-        onOpen: () => {
-
-            const getHistory = async () => {
-                try {
-                    const response = await axios(`${MESSAGE_HISTORY_URL}/get-room-messages/?room-name=${activeChat.chat_name}`)
-                    setMessageHistory(response?.data)
-                } catch (error) {
-                    console.log('Failed to get history: ', error?.response?.data)
-                }
-            }
-            getHistory()
-        },
+        onOpen: () => {},
         shouldReconnect: (closeEvent) => true,
     });
+
+    useEffect(() => {
+        setMessageLoader(true)
+        setMessageHistory([])
+        const getHistory = async () => {
+            try {
+                const response = await axios(`${MESSAGE_HISTORY_URL}/get-room-messages/?room-name=${activeChat.chat_name}`)
+                setMessageHistory(response?.data)
+                setMessageLoader(false)
+            } catch (error) {
+                console.log('Failed to get history: ', error?.response?.data)
+            }finally {
+                setMessageLoader(false)
+            }
+        }
+        getHistory()
+    }, [activeChat])
 
     useEffect(() => {
         if (lastJsonMessage !== null && lastJsonMessage?.type === 'message') {
@@ -86,41 +86,35 @@ const ChatMessages = ({activeChat, addContactsModal, setAddContactsModal}) => {
     return (
         <div className='flex flex-col w-full h-full max-h-[calc(100%-68px)] z-10'>
             <div className={`relative flex flex-col-reverse flex-1 bg-cover bg-no-repeat bg-center w-full overflow-y-scroll py-8`} style={{backgroundImage: `url(${chatBg})`}}>
-                {/*{*/}
-                {/*    addContactsModal &&*/}
-                {/*    <AddContactsModal callbackCloseModal={setAddContactsModal}/>*/}
-                {/*}*/}
-                {/*Message area*/}
-                <div className='text-gallery w-full flex flex-col pb-5'>
-                    {messageHistory && messageHistory.map((msg, index) => (
-                        <div key={index} className='grid mb-1'>
-                            {msg?.author?.email === authService.getUser().email ?
-                                <div
-                                    className='px-3 py-2 rounded-lg bg-eden flex justify-end justify-self-end mr-10 ml-32 break-all'>
-                                    <div className='text-[14px]'>{msg.content}</div>
-                                    <div className='flex min-w-8 text-[10px] text-nobel-light items-end justify-end -mb-0.5'>{convertTime(msg.timestamp)}</div>
-                                </div> :
-                                <div
-                                    className='px-3 py-2 rounded-lg bg-shark flex justify-self-start ml-10 mr-32 break-all'>
-                                    <div className='text-[14px]'>{msg.content}</div>
-                                    <div className='flex min-w-8 text-[10px] text-nobel-light items-end justify-end -mb-0.5'>{convertTime(msg.timestamp)}</div>
-                                </div>
-                            }
-                        </div>
-                    ))}
-                </div>
-
-
+                {messageLoader ?
+                    <MessageSkeleton/> :
+                    <div className='text-gallery w-full flex flex-col pb-5'>
+                        {messageHistory && messageHistory.map((msg, index) => (
+                            <div key={index} className='grid mb-1'>
+                                {msg?.author?.email === authService.getUser().email ?
+                                    <div className='px-3 py-2 rounded-lg bg-eden flex justify-end justify-self-end mr-10 ml-32 break-all'>
+                                        <div className='text-[14px]'>{msg.content}</div>
+                                        <div className='flex min-w-8 text-[10px] text-nobel-light items-end justify-end -mb-0.5'>{convertTime(msg.timestamp)}</div>
+                                    </div> :
+                                    <div className='px-3 py-2 rounded-lg bg-shark flex justify-self-start ml-10 mr-32 break-all'>
+                                        <div className='text-[14px]'>{msg.content}</div>
+                                        <div className='flex min-w-8 text-[10px] text-nobel-light items-end justify-end -mb-0.5'>{convertTime(msg.timestamp)}</div>
+                                    </div>
+                                }
+                            </div>
+                        ))}
+                    </div>
+                }
             </div>
             {/*Text Area Bottom Bar*/}
             <div className='bg-shark px-6 py-3 text-nobel-light flex space-x-4 items-end'>
                 <div className='flex items-center h-10'>
-                    <Tooltip title='Emoji'>
+                    <Tooltip title='Comming soon'>
                         <div><FaRegSmileWink className='text-2xl cursor-pointer'/></div>
                     </Tooltip>
                 </div>
                 <div className='flex items-center h-10'>
-                    <Tooltip title='Attach'>
+                    <Tooltip title='Comming soon'>
                         <div><ImAttachment className='text-2xl cursor-pointer'/></div>
                     </Tooltip>
                 </div>
