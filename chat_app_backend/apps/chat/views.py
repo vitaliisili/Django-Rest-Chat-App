@@ -1,6 +1,5 @@
 import logging
 import uuid
-
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework import viewsets, status
@@ -8,8 +7,12 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apps.chat.models import ChatRequest, ChatRoom, Message
-from apps.chat.serializers import ChatRequestSerializer, ChatRoomSerializer, ContactChatRoomSerializer, \
+from apps.chat.serializers import (
+    ChatRequestSerializer,
+    ChatRoomSerializer,
+    ContactChatRoomSerializer,
     MessageSerializer
+)
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +80,9 @@ class ChatRoomViewSet(viewsets.ModelViewSet):
 
     @action(methods=['GET'], detail=False, url_path='contacts')
     def get_contacts(self, request):
+        logger.info(f"Query filter: {request.query_params.get('name')}")
+
+        filter_name = request.query_params.get('name')
         try:
             queryset = ChatRoom.objects.filter(members__id=request.user.id)  # noqa
             data = [
@@ -91,14 +97,16 @@ class ChatRoomViewSet(viewsets.ModelViewSet):
                         chat.members.all()[0].image,
                     "chat_name": chat.name,
                 } for chat in queryset
-            ]  # TODO: Simplify this code because WTF :)
+            ]
+
+            if filter_name:
+                data = list(filter(lambda contact: filter_name.lower() in contact.get('contact_name').lower(), data))
 
             serializer = ContactChatRoomSerializer(data=data, many=True)
             serializer.is_valid(raise_exception=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
-            print(e)
             return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
