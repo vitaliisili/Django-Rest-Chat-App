@@ -4,6 +4,8 @@ Django and Django REST Framework.
 
 ![cover.png](docs/images/cover.png)
 
+#### For demo [click here](https://chat.vitaliisili.com)
+
 ## Features
 - User Authentication: Users can register, login, and logout.
 - Real-time Chatting: Users can send and receive real-time messages in chat rooms.

@@ -7,6 +7,8 @@ to communicate with each other in real-time. It utilizes React components,
 React Hooks, Django Rest Framework, and Django Channels for managing chat 
 functionality.
 
+#### For demo [click here](https://chat.vitaliisili.com)
+
 ## Getting Started
 To get started with this project, follow these steps:
 
