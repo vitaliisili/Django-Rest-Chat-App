@@ -33,6 +33,7 @@ THIRD_PARTY_APPS = [
     'social_django',
     'drf_social_oauth2',
     'django_filters',
+    'drf_standardized_errors',
 ]
 
 INSTALLED_APPS = [
@@ -58,6 +59,13 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
     ],
     'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.ResultSetPagination',
+    "EXCEPTION_HANDLER": "drf_standardized_errors.handler.exception_handler",
+}
+
+DRF_STANDARDIZED_ERRORS = {
+    "EXCEPTION_HANDLER_CLASS": "apps.core.exception.exception_handler.CustomExceptionHandler",
+    "EXCEPTION_FORMATTER_CLASS": "apps.core.exception.exception_formatter.CustomExceptionFormatter",
+    "ENABLE_IN_DEBUG_FOR_UNHANDLED_EXCEPTIONS": True,
 }
 
 oauth2_settings.DEFAULTS['ACCESS_TOKEN_EXPIRE_SECONDS'] = env.int('OAUTH2_ACCESS_TOKEN_EXPIRE_SECONDS')
